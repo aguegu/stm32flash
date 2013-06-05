@@ -41,6 +41,17 @@ struct serial {
 	serial_stopbit_t	stopbit;
 };
 
+void uSleep(int waitTime) {
+    __int64 time1 = 0, time2 = 0, freq = 0;
+
+    QueryPerformanceCounter((LARGE_INTEGER *) &time1);
+    QueryPerformanceFrequency((LARGE_INTEGER *)&freq);
+
+    do {
+        QueryPerformanceCounter((LARGE_INTEGER *) &time2);
+    } while((time2-time1) < waitTime);
+}
+
 serial_t* serial_open(const char *device) 
 {
 	serial_t *h = calloc(sizeof(serial_t), 1);
@@ -190,8 +201,15 @@ serial_err_t serial_write(const serial_t *h, const void *buffer, unsigned int le
 	uint8_t *pos = (uint8_t*)buffer;
 
 	while(len > 0) {
-		if(!WriteFile(h->fd, pos, len, &r, NULL))
-			return SERIAL_ERR_SYSTEM;
+		if (softflow_control) {	
+			if (!WriteFile(h->fd, pos, 1, &r, NULL))
+				return SERIAL_ERR_SYSTEM;
+			uSleep(0x100);
+		}
+		else 
+			if(!WriteFile(h->fd, pos, len, &r, NULL))
+				return SERIAL_ERR_SYSTEM;
+
 		if (r < 1) return SERIAL_ERR_SYSTEM;
 
 		len -= r;
