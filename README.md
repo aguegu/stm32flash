@@ -17,5 +17,8 @@ CH340 is not functional without RTS/CTS connection (it would return
 
 ), unless "-s" is specificed.
 
-develop & test on Ubuntu
+Wish this tweak would help to solve this problem. 
+
+develop & test on Ubuntui Linux. 
+
 Weihong Guan (@aGuegu)
