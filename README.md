@@ -1,9 +1,9 @@
-stm32flash:W
+stm32flash
 ================================
 
 *origin from https://code.google.com/p/stm32flash/*
 
-add "-s" argument to enable software flow control, in which data is is sent one by one and with extra delay.
+add "-s" argument to enable software flow control, in which data is is sent one by one and with extra delay (255 us).
 
 In my experiment, USB to RS232 chips vary in function.
 
@@ -18,4 +18,4 @@ CH340 is not functional without RTS/CTS connection (it would return
 ), unless "-s" is specificed.
 
 develop & test on Ubuntu
-
+Weihong Guan (@aGuegu)
