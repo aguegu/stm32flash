@@ -62,6 +62,8 @@ char		*filename;
 int  parse_options(int argc, char *argv[]);
 void show_help(char *name);
 
+unsigned char softflow_control = 0;
+
 int main(int argc, char* argv[]) {
 	int ret = 1;
 	parser_err_t perr;
@@ -296,7 +298,7 @@ close:
 
 int parse_options(int argc, char *argv[]) {
 	int c;
-	while((c = getopt(argc, argv, "b:r:w:e:vn:g:fchu")) != -1) {
+	while((c = getopt(argc, argv, "b:r:w:e:vn:g:fchus")) != -1) {
 		switch(c) {
 			case 'b':
 				baudRate = serial_get_baud(strtoul(optarg, NULL, 0));
@@ -353,6 +355,10 @@ int parse_options(int argc, char *argv[]) {
 				init_flag = 0;
 				break;
 
+			case 's':
+				softflow_control = 1;
+				break;
+
 			case 'h':
 				show_help(argv[0]);
 				return 1;
@@ -399,6 +405,7 @@ void show_help(char *name) {
 		"	-c		Resume the connection (don't send initial INIT)\n"
 		"			*Baud rate must be kept the same as the first init*\n"
 		"			This is useful if the reset fails\n"
+		"	-s software flow control"
 		"\n"
 		"Examples:\n"
 		"	Get device information:\n"

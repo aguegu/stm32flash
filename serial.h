@@ -84,4 +84,7 @@ const unsigned int serial_get_bits_int   (const serial_bits_t bits);
 const char         serial_get_parity_str (const serial_parity_t parity);
 const unsigned int serial_get_stopbit_int(const serial_stopbit_t stopbit);
 
+
+extern unsigned char softflow_control;
+
 #endif

@@ -180,8 +180,14 @@ serial_err_t serial_write(const serial_t *h, const void *buffer, unsigned int le
 	uint8_t *pos = (uint8_t*)buffer;
 
 	while(len > 0) {
-	    r = write(h->fd, pos, 1);
-        usleep(0x100);
+
+		if (softflow_control) {
+		    r = write(h->fd, pos, 1);
+			usleep(0x100);
+    	}
+    	else 
+			r = write(h->fd, pos, len); 
+		
 		if (r < 1) return SERIAL_ERR_SYSTEM;
 
 		len -= r;
